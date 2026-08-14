@@ -386,6 +386,19 @@ SupermercatoRepository
 
 `findAll()` restituisce una lista di model, mentre `findById()` restituisce il model oppure `null`. `save()` e `delete()` controllano il risultato dell'Active Record e sollevano `PersistenceException` quando Phalcon restituisce `false`.
 
+I contratti vengono collegati alle implementazioni nel container DI tramite una mappa. Le factory registrate con Phalcon non devono essere closure `static`, perché il container prova ad associarle alla propria istanza:
+
+```php
+$di->setShared(
+    $contract,
+    function () use ($implementation): object {
+        return new $implementation();
+    }
+);
+```
+
+Una `static function` provoca `Cannot bind an instance to a static closure`. Il test `scripts/check-repositories.php` verifica che ogni contratto risolva l'implementazione corretta e che `setShared()` restituisca sempre la stessa istanza.
+
 La struttura PSR-4 rispetta maiuscole e minuscole:
 
 ```text
@@ -394,3 +407,38 @@ app/Repositories
 app/Repositories/Impl
 app/Exceptions
 ```
+
+## Service applicativi
+
+Ai quattro repository principali corrispondono quattro contratti service:
+
+```text
+ClienteService
+OrdineService
+ProdottoService
+SupermercatoService
+```
+
+Le implementazioni si trovano in `app/Services/Impl`. Il repository restituisce
+`null` quando un record non esiste; il service converte questo risultato in
+`EntityNotFoundException` e rifiuta gli ID minori o uguali a zero con
+`InvalidArgumentException`.
+
+I service vengono registrati come condivisi nel container tramite una mappa di
+factory. Ogni factory dichiara esplicitamente il repository da iniettare:
+
+```php
+$serviceBindings = [
+    ProdottoService::class => fn () => new ProdottoServiceImpl(
+        $di->getShared(ProdottoRepository::class)
+    ),
+];
+
+foreach ($serviceBindings as $contract => $factory) {
+    $di->setShared($contract, $factory);
+}
+```
+
+È l'equivalente di una configurazione Spring con metodi `@Bean`, ma senza
+autowiring automatico. `setShared()` garantisce che richieste successive dello
+stesso contratto ricevano la medesima istanza del service.

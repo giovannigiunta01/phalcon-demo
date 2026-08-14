@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Phalcon\Html\Escaper;
@@ -18,6 +19,15 @@ use App\Repositories\Impl\ProdottoRepositoryImpl;
 use App\Repositories\Impl\ClienteRepositoryImpl;
 use App\Repositories\Impl\OrdineRepositoryImpl;
 use App\Repositories\Impl\SupermercatoRepositoryImpl;
+use App\Services\ProdottoService;
+use App\Services\Impl\ProdottoServiceImpl;
+use App\Services\ClienteService;
+use App\Services\Impl\ClienteServiceImpl;
+use App\Services\OrdineService;
+use App\Services\Impl\OrdineServiceImpl;
+use App\Services\SupermercatoService;
+use App\Services\Impl\SupermercatoServiceImpl;
+
 /**
  * Shared configuration service
  */
@@ -134,16 +144,16 @@ $di->setShared('session', function () {
  */
 $repositoryBindings = [
     ClienteRepository::class =>
-        ClienteRepositoryImpl::class,
+    ClienteRepositoryImpl::class,
 
     OrdineRepository::class =>
-        OrdineRepositoryImpl::class,
+    OrdineRepositoryImpl::class,
 
     ProdottoRepository::class =>
-        ProdottoRepositoryImpl::class,
+    ProdottoRepositoryImpl::class,
 
     SupermercatoRepository::class =>
-        SupermercatoRepositoryImpl::class,
+    SupermercatoRepositoryImpl::class,
 ];
 
 foreach ($repositoryBindings as $contract => $implementation) {
@@ -153,4 +163,26 @@ foreach ($repositoryBindings as $contract => $implementation) {
             return new $implementation();
         }
     );
+}
+
+/**
+ * Collegamento tra contratti service e implementazioni Phalcon.
+ */
+$serviceBindings = [
+    ClienteService::class => fn () => new ClienteServiceImpl(
+        $di->getShared(ClienteRepository::class)
+    ),
+    OrdineService::class => fn () => new OrdineServiceImpl(
+        $di->getShared(OrdineRepository::class)
+    ),
+    ProdottoService::class => fn () => new ProdottoServiceImpl(
+        $di->getShared(ProdottoRepository::class)
+    ),
+    SupermercatoService::class => fn () => new SupermercatoServiceImpl(
+        $di->getShared(SupermercatoRepository::class)
+    ),
+];
+
+foreach ($serviceBindings as $contract => $factory) {
+    $di->setShared($contract, $factory);
 }

@@ -25,6 +25,7 @@ cd C:\Users\Giovanni\Desktop\PGE\Studio\supermercato-crud
 | Mostrare le dipendenze | `composer show` |
 | Controllare Composer | `composer diagnose` |
 | Verificare la connessione al database | `php scripts\check-db.php` |
+| Verificare repository e collegamenti DI | `php scripts\check-repositories.php` |
 | Creare un controller | `phalcon create-controller --name prodotti` |
 | Creare un model | `phalcon model prodotti` |
 | Mostrare l'aiuto per i model | `phalcon model --help` |
@@ -357,6 +358,25 @@ SOURCE C:/Users/Giovanni/Documents/PGE/supermercato_demo.sql;
 > Lo script didattico contiene `DROP DATABASE IF EXISTS supermercato_demo`: rieseguirlo elimina e ricrea l'intero database, cancellando eventuali modifiche ai dati.
 
 ## Controlli PHP utili
+
+### Verificare i repository registrati nel container
+
+```powershell
+php -l app\config\services.php
+php -l scripts\check-repositories.php
+php scripts\check-repositories.php
+```
+
+Risultato verificato:
+
+```text
+OK App\Repositories\ClienteRepository       10 record
+OK App\Repositories\OrdineRepository        10 record
+OK App\Repositories\ProdottoRepository      10 record
+OK App\Repositories\SupermercatoRepository  10 record
+```
+
+Il controllo verifica binding interfaccia-implementazione, istanza condivisa, `findAll()`, `findById()` e tipo dei model restituiti. Non modifica il database.
 
 Verificare la sintassi di un file:
 
