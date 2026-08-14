@@ -7,7 +7,7 @@ Progetto didattico per imparare Phalcon 5 realizzando un'applicazione CRUD strut
 Eseguire i comandi applicativi dalla cartella del progetto:
 
 ```powershell
-cd C:\Users\Giovanni\Desktop\PGE\supermercato-crud
+cd C:\Users\Giovanni\Desktop\PGE\Studio\supermercato-crud
 ```
 
 | Obiettivo | Comando |
@@ -79,7 +79,7 @@ Se `phalcon` non viene riconosciuto da PowerShell:
 Entrare nella directory del progetto:
 
 ```powershell
-cd C:\Users\Giovanni\Desktop\PGE\supermercato-crud
+cd C:\Users\Giovanni\Desktop\PGE\Studio\supermercato-crud
 ```
 
 Avviare il server PHP integrato:

@@ -1,10 +1,15 @@
 <?php
-namespace app\Repositories;
+
+declare(strict_types=1);
+
+namespace App\Repositories;
 
 use App\Models\Ordine;
 
-interface OrdineRepository{
+interface OrdineRepository
+{
 
+    /** @return list<Ordine> */
     public function findAll(): array;
 
     public function findById(int $id): ?Ordine;

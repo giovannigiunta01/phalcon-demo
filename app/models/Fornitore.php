@@ -27,5 +27,15 @@ final class Fornitore extends Model
             'fornitore_id',
             ['alias' => 'forniture']
         );
+
+        $this->hasManyToMany(
+            'id',
+            ProdottoFornitore::class,
+            'fornitore_id',
+            'prodotto_id',
+            Prodotto::class,
+            'id',
+            ['alias' => 'prodotti']
+        );
     }
 }

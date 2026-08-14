@@ -1,10 +1,15 @@
 <?php
-namespace app\Repositories;
+
+declare(strict_types=1);
+
+namespace App\Repositories;
 
 use App\Models\Cliente;
 
-interface ClienteRepository{
+interface ClienteRepository
+{
 
+    /** @return list<Cliente> */
     public function findAll(): array;
 
     public function findById(int $id): ?Cliente;

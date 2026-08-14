@@ -59,8 +59,8 @@ class Dipendente extends \Phalcon\Mvc\Model
     {
         $this->setSchema("supermercato_demo");
         $this->setSource("dipendenti");
-        $this->hasMany('id', 'Ordini', 'dipendente_id', ['alias' => 'Ordini']);
-        $this->belongsTo('supermercato_id', '\Supermercati', 'id', ['alias' => 'Supermercati']);
+        $this->hasMany('id', Ordine::class, 'dipendente_id', ['alias' => 'ordini']);
+        $this->belongsTo('supermercato_id', Supermercato::class, 'id', ['alias' => 'supermercato']);
     }
 
     /**

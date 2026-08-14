@@ -64,10 +64,21 @@ class Ordine extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->setSchema("supermercato_demo");
-        $this->setSource("Ordini");
-        $this->belongsTo('cliente_id', '\Clienti', 'id', ['alias' => 'Clienti']);
-        $this->belongsTo('dipendente_id', '\Dipendenti', 'id', ['alias' => 'Dipendenti']);
-        $this->belongsTo('supermercato_id', '\Supermercati', 'id', ['alias' => 'Supermercati']);
+        $this->setSource('ordini');
+        $this->belongsTo('cliente_id', Cliente::class, 'id', ['alias' => 'cliente']);
+        $this->belongsTo('dipendente_id', Dipendente::class, 'id', ['alias' => 'dipendente']);
+        $this->belongsTo('supermercato_id', Supermercato::class, 'id', ['alias' => 'supermercato']);
+        $this->hasMany('id', OrdineProdotto::class, 'ordine_id', ['alias' => 'righe']);
+
+        $this->hasManyToMany(
+            'id',
+            OrdineProdotto::class,
+            'ordine_id',
+            'prodotto_id',
+            Prodotto::class,
+            'id',
+            ['alias' => 'prodotti']
+        );
     }
 
     /**

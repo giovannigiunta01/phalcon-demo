@@ -90,11 +90,21 @@ class Supermercato extends \Phalcon\Mvc\Model
     {
         $this->setSchema("supermercato_demo");
         $this->setSource("supermercati");
-        $this->hasMany('id', 'Dipendenti', 'supermercato_id', ['alias' => 'Dipendenti']);
-        $this->hasMany('id', 'IndirizziSupermercato', 'supermercato_id', ['alias' => 'IndirizziSupermercato']);
-        $this->hasMany('id', 'Ordini', 'supermercato_id', ['alias' => 'Ordini']);
-        $this->hasMany('id', 'Reparti', 'supermercato_id', ['alias' => 'Reparti']);
-        $this->hasMany('id', 'SupermercatiProdotti', 'supermercato_id', ['alias' => 'SupermercatiProdotti']);
+        $this->hasOne('id', IndirizzoSupermercato::class, 'supermercato_id', ['alias' => 'indirizzo']);
+        $this->hasMany('id', Dipendente::class, 'supermercato_id', ['alias' => 'dipendenti']);
+        $this->hasMany('id', Ordine::class, 'supermercato_id', ['alias' => 'ordini']);
+        $this->hasMany('id', Reparto::class, 'supermercato_id', ['alias' => 'reparti']);
+        $this->hasMany('id', SupermercatoProdotto::class, 'supermercato_id', ['alias' => 'assortimenti']);
+
+        $this->hasManyToMany(
+            'id',
+            SupermercatoProdotto::class,
+            'supermercato_id',
+            'prodotto_id',
+            Prodotto::class,
+            'id',
+            ['alias' => 'prodotti']
+        );
     }
 
     /**

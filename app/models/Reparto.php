@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class Reparti extends \Phalcon\Mvc\Model
+class Reparto extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -41,15 +41,15 @@ class Reparti extends \Phalcon\Mvc\Model
     {
         $this->setSchema("supermercato_demo");
         $this->setSource("reparti");
-        $this->hasMany('id', 'Prodotti', 'reparto_id', ['alias' => 'Prodotti']);
-        $this->belongsTo('supermercato_id', '\Supermercati', 'id', ['alias' => 'Supermercati']);
+        $this->hasMany('id', Prodotto::class, 'reparto_id', ['alias' => 'prodotti']);
+        $this->belongsTo('supermercato_id', Supermercato::class, 'id', ['alias' => 'supermercato']);
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Reparti[]|Reparti|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return Reparto[]|Reparto|\Phalcon\Mvc\Model\ResultSetInterface
      */
     public static function find($parameters = null): \Phalcon\Mvc\Model\ResultsetInterface
     {
@@ -60,7 +60,7 @@ class Reparti extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Reparti|\Phalcon\Mvc\Model\ResultInterface|\Phalcon\Mvc\ModelInterface|null
+     * @return Reparto|\Phalcon\Mvc\Model\ResultInterface|\Phalcon\Mvc\ModelInterface|null
      */
     public static function findFirst($parameters = null): ?\Phalcon\Mvc\ModelInterface
     {

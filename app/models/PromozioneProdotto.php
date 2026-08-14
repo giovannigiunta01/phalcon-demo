@@ -17,11 +17,9 @@ final class PromozioneProdotto extends Model
     {
         $this->setSource('promozioni_prodotti');
 
-        // Riferimento temporaneo al model globale generato dai DevTools.
-        // Diventerà Promozione::class quando uniformeremo i model esistenti.
         $this->belongsTo(
             'promozione_id',
-            'Promozioni',
+            Promozione::class,
             'id',
             ['alias' => 'promozione']
         );

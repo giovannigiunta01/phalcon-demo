@@ -10,7 +10,14 @@ use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Mvc\Url as UrlResolver;
-
+use App\Repositories\ProdottoRepository;
+use App\Repositories\ClienteRepository;
+use App\Repositories\OrdineRepository;
+use App\Repositories\SupermercatoRepository;
+use App\Repositories\Impl\ProdottoRepositoryImpl;
+use App\Repositories\Impl\ClienteRepositoryImpl;
+use App\Repositories\Impl\OrdineRepositoryImpl;
+use App\Repositories\Impl\SupermercatoRepositoryImpl;
 /**
  * Shared configuration service
  */
@@ -121,3 +128,29 @@ $di->setShared('session', function () {
 
     return $session;
 });
+
+/**
+ * Collegamento tra contratti repository e implementazioni Phalcon.
+ */
+$repositoryBindings = [
+    ClienteRepository::class =>
+        ClienteRepositoryImpl::class,
+
+    OrdineRepository::class =>
+        OrdineRepositoryImpl::class,
+
+    ProdottoRepository::class =>
+        ProdottoRepositoryImpl::class,
+
+    SupermercatoRepository::class =>
+        SupermercatoRepositoryImpl::class,
+];
+
+foreach ($repositoryBindings as $contract => $implementation) {
+    $di->setShared(
+        $contract,
+        function () use ($implementation): object {
+            return new $implementation();
+        }
+    );
+}

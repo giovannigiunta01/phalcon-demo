@@ -1,10 +1,15 @@
 <?php
-namespace app\Repositories;
+
+declare(strict_types=1);
+
+namespace App\Repositories;
 
 use App\Models\Supermercato;
 
-interface SupermercatoRepository{
+interface SupermercatoRepository
+{
 
+    /** @return list<Supermercato> */
     public function findAll(): array;
 
     public function findById(int $id): ?Supermercato;

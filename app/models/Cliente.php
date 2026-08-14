@@ -83,8 +83,8 @@ class Cliente extends \Phalcon\Mvc\Model
     {
         $this->setSchema("supermercato_demo");
         $this->setSource("clienti");
-        $this->hasMany('id', 'CarteFedelta', 'cliente_id', ['alias' => 'CarteFedelta']);
-        $this->hasMany('id', 'Ordini', 'cliente_id', ['alias' => 'Ordini']);
+        $this->hasOne('id', CartaFedelta::class, 'cliente_id', ['alias' => 'cartaFedelta']);
+        $this->hasMany('id', Ordine::class, 'cliente_id', ['alias' => 'ordini']);
     }
 
     /**

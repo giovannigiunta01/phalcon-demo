@@ -1,10 +1,15 @@
 <?php
-namespace app\Repositories;
+
+declare(strict_types=1);
+
+namespace App\Repositories;
 
 use App\Models\Prodotto;
 
-interface ProdottoRepository{
+interface ProdottoRepository
+{
     
+    /** @return list<Prodotto> */
     public function findAll(): array;
 
     public function findById(int $id): ?Prodotto;

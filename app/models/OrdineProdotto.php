@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class OrdiniProdotti extends \Phalcon\Mvc\Model
+class OrdineProdotto extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -40,9 +40,9 @@ class OrdiniProdotti extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->setSchema("supermercato_demo");
-        $this->setSource("Ordini_Prodotti");
-        $this->belongsTo('ordine_id', '\Ordini', 'id', ['alias' => 'Ordini']);
-        $this->belongsTo('prodotto_id', '\Prodotti', 'id', ['alias' => 'Prodotti']);
+        $this->setSource('ordini_prodotti');
+        $this->belongsTo('ordine_id', Ordine::class, 'id', ['alias' => 'ordine']);
+        $this->belongsTo('prodotto_id', Prodotto::class, 'id', ['alias' => 'prodotto']);
     }
 
     /**

@@ -23,11 +23,9 @@ final class IndirizzoSupermercato extends Model
     {
         $this->setSource('indirizzi_supermercato');
 
-        // Riferimento temporaneo al model globale generato dai DevTools.
-        // Diventerà Supermercato::class quando uniformeremo i model esistenti.
         $this->belongsTo(
             'supermercato_id',
-            'Supermercati',
+            Supermercato::class,
             'id',
             ['alias' => 'supermercato']
         );

@@ -1,22 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories\Impl;
 
+use App\Exceptions\PersistenceException;
 use App\Models\Prodotto;
 use App\Repositories\ProdottoRepository;
+use Phalcon\Db\Column;
 
 final class ProdottoRepositoryImpl implements ProdottoRepository
 {
     public function findAll(): array
     {
-        return Prodotto::find()->toArray();
+        return iterator_to_array(Prodotto::find(), false);
     }
 
     public function findById(int $id): ?Prodotto
     {
-        $result = Prodotto::FindFirst([
+        $result = Prodotto::findFirst([
             'conditions' => 'id = :id:',
-            'bind' => ['id' => $id]
+            'bind' => ['id' => $id],
+            'bindTypes' => ['id' => Column::BIND_PARAM_INT],
         ]);
 
         return $result === false ? null : $result;
@@ -24,11 +29,19 @@ final class ProdottoRepositoryImpl implements ProdottoRepository
 
     public function save(Prodotto $prodotto): void
     {
-        $prodotto->save();
+        if ($prodotto->save() === false) {
+            throw new PersistenceException(
+                'Impossibile salvare il prodotto: ' . implode('; ', $prodotto->getMessages())
+            );
+        }
     }
 
     public function delete(Prodotto $prodotto): void
     {
-        $prodotto->delete();
+        if ($prodotto->delete() === false) {
+            throw new PersistenceException(
+                'Impossibile eliminare il prodotto: ' . implode('; ', $prodotto->getMessages())
+            );
+        }
     }
 }

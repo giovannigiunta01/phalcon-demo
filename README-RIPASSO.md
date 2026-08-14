@@ -342,3 +342,55 @@ catch (\Throwable $exception) {
 ```
 
 intercetta sia le eccezioni sia gli errori PHP. Nel namespace globale non serve importare `Throwable` con `use Throwable`; si può usare direttamente il nome completo `\Throwable`.
+
+## Model e repository normalizzati
+
+I model usano nomi di entità singolari e tabelle plurali:
+
+```text
+Cliente          → clienti
+CartaFedelta     → carte_fedelta
+Ordine           → ordini
+OrdineProdotto   → ordini_prodotti
+Prodotto         → prodotti
+Reparto          → reparti
+Supermercato     → supermercati
+```
+
+Le relazioni 1:1 derivano dai vincoli `UNIQUE`:
+
+```text
+Cliente 1:1 CartaFedelta
+Supermercato 1:1 IndirizzoSupermercato
+```
+
+Le tabelle associative con attributi propri rimangono model di prima classe:
+
+```text
+ProdottoFornitore
+SupermercatoProdotto
+PromozioneProdotto
+OrdineProdotto
+```
+
+I relativi `hasManyToMany()` sono scorciatoie di lettura e non sostituiscono i model associativi, necessari per costo, scorta, quantità, prezzo e sconto.
+
+I repository principali sono:
+
+```text
+ClienteRepository
+OrdineRepository
+ProdottoRepository
+SupermercatoRepository
+```
+
+`findAll()` restituisce una lista di model, mentre `findById()` restituisce il model oppure `null`. `save()` e `delete()` controllano il risultato dell'Active Record e sollevano `PersistenceException` quando Phalcon restituisce `false`.
+
+La struttura PSR-4 rispetta maiuscole e minuscole:
+
+```text
+app/Models
+app/Repositories
+app/Repositories/Impl
+app/Exceptions
+```

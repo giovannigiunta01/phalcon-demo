@@ -308,11 +308,51 @@ class Prodotto extends \Phalcon\Mvc\Model
     {
         $this->setSchema("supermercato_demo");
         $this->setSource("prodotti");
-        $this->hasMany('id', 'App\Models\OrdiniProdotti', 'prodotto_id', ['alias' => 'OrdiniProdotti']);
-        $this->hasMany('id', 'App\Models\ProdottiFornitori', 'prodotto_id', ['alias' => 'ProdottiFornitori']);
-        $this->hasMany('id', 'App\Models\PromozioniProdotti', 'prodotto_id', ['alias' => 'PromozioniProdotti']);
-        $this->hasMany('id', 'App\Models\SupermercatiProdotti', 'prodotto_id', ['alias' => 'SupermercatiProdotti']);
-        $this->belongsTo('reparto_id', 'App\Models\Reparti', 'id', ['alias' => 'Reparti']);
+        $this->belongsTo('reparto_id', Reparto::class, 'id', ['alias' => 'reparto']);
+        $this->hasMany('id', OrdineProdotto::class, 'prodotto_id', ['alias' => 'righeOrdine']);
+        $this->hasMany('id', ProdottoFornitore::class, 'prodotto_id', ['alias' => 'forniture']);
+        $this->hasMany('id', PromozioneProdotto::class, 'prodotto_id', ['alias' => 'promozioniProdotto']);
+        $this->hasMany('id', SupermercatoProdotto::class, 'prodotto_id', ['alias' => 'assortimenti']);
+
+        $this->hasManyToMany(
+            'id',
+            ProdottoFornitore::class,
+            'prodotto_id',
+            'fornitore_id',
+            Fornitore::class,
+            'id',
+            ['alias' => 'fornitori']
+        );
+
+        $this->hasManyToMany(
+            'id',
+            SupermercatoProdotto::class,
+            'prodotto_id',
+            'supermercato_id',
+            Supermercato::class,
+            'id',
+            ['alias' => 'supermercati']
+        );
+
+        $this->hasManyToMany(
+            'id',
+            PromozioneProdotto::class,
+            'prodotto_id',
+            'promozione_id',
+            Promozione::class,
+            'id',
+            ['alias' => 'promozioni']
+        );
+
+        $this->hasManyToMany(
+            'id',
+            OrdineProdotto::class,
+            'prodotto_id',
+            'ordine_id',
+            Ordine::class,
+            'id',
+            ['alias' => 'ordini']
+        );
     }
 
     /**

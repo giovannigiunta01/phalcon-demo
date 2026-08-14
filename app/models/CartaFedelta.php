@@ -1,6 +1,6 @@
 <?php
 namespace App\Models;
-class CarteFedelta extends \Phalcon\Mvc\Model
+class CartaFedelta extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -52,7 +52,7 @@ class CarteFedelta extends \Phalcon\Mvc\Model
     {
         $this->setSchema("supermercato_demo");
         $this->setSource("carte_fedelta");
-        $this->belongsTo('cliente_id', '\Clienti', 'id', ['alias' => 'Clienti']);
+        $this->belongsTo('cliente_id', Cliente::class, 'id', ['alias' => 'cliente']);
     }
 
     /**

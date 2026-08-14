@@ -59,7 +59,17 @@ class Promozione extends \Phalcon\Mvc\Model
     {
         $this->setSchema("supermercato_demo");
         $this->setSource("promozioni");
-        $this->hasMany('id', 'PromozioniProdotti', 'promozione_id', ['alias' => 'PromozioniProdotti']);
+        $this->hasMany('id', PromozioneProdotto::class, 'promozione_id', ['alias' => 'prodottiPromozione']);
+
+        $this->hasManyToMany(
+            'id',
+            PromozioneProdotto::class,
+            'promozione_id',
+            'prodotto_id',
+            Prodotto::class,
+            'id',
+            ['alias' => 'prodotti']
+        );
     }
 
     /**
